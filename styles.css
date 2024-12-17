@@ -1,0 +1,418 @@
+@layer base, typography, components;
+:root {
+  --list-font-size: max(0.875rem, 1vw);
+  --list-card-checkbox: 1.8em;
+  --text-base-color: var(--gray-7);
+  --text-bold-color: var(--gray-10);
+  --card-bg-hover: var(--gray-2);
+  --card-checkbox-bg: var(--gray-1);
+  --card-checkbox-initials: var(--gray-6);
+  --borders: var(--gray-4);
+  color-scheme: dark light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-base-color: var(--gray-6);
+    --text-bold-color: var(--gray-5);
+    --card-bg-hover: var(--gray-10);
+    --card-checkbox-bg: var(--gray-10);
+    --borders: var(--gray-9);
+    background-color: var(--gray-12);
+  }
+}
+.star-icon:before {
+  content: "\e838";
+}
+
+.check-icon:before {
+  content: "\e5ca";
+}
+
+.narrow-icon:before {
+  content: "\f73f";
+}
+
+.wide-icon:before {
+  content: "\f101";
+}
+
+.menu-icon:before {
+  content: "\e5d2";
+}
+
+@media screen and (min-width: 768px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1em repeat(3, auto) 1em;
+    grid-template-areas: ". greeting greeting greeting . " ". nav header header . " ". nav list list . ";
+  }
+  #list_container,
+  header {
+    border: 1px solid var(--borders);
+  }
+  #greeting {
+    grid-area: greeting;
+  }
+  #menu-btn {
+    visibility: hidden;
+  }
+  #list_container {
+    grid-area: list;
+    overflow: scroll;
+    border: 1px solid var(--borders);
+    border-radius: 0 0 1rem 1rem;
+  }
+  #list_container > * {
+    position: relative;
+  }
+  #nav_primary {
+    grid-area: nav;
+    place-items: center;
+    margin-bottom: -1px;
+    position: relative;
+  }
+  header {
+    flex-flow: column nowrap;
+    border-radius: 1rem 1rem 0 0;
+    margin-bottom: -1px;
+    grid-area: header;
+  }
+  .slider {
+    transform: translate(0);
+  }
+}
+/**  
+
+Emails in LIST
+
+**/
+.email {
+  margin: 0.5rem 0;
+  padding-bottom: 0.5rem;
+}
+.email__actions input[type=checkbox], .email__priority input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.email__actions label > img, .email__priority label > img {
+  max-width: 100%;
+}
+.email__actions {
+  width: var(--list-card-checkbox);
+  height: var(--list-card-checkbox);
+  align-items: center;
+  justify-content: center;
+}
+.email__actions * > * {
+  width: 100%;
+  height: 100%;
+}
+.email__actions img {
+  aspect-ratio: 1/1;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 50% 0;
+     object-position: 50% 0;
+}
+.email__actions span.check-icon::before {
+  opacity: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.email__actions input[type=checkbox] {
+  z-index: 2;
+  width: calc(var(--list-card-checkbox) + 24px);
+  height: calc(var(--list-card-checkbox) + 24px);
+}
+.email__actions input[type=checkbox] + span.check-icon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.email__actions :is(input[type=checkbox]:checked) + span.check-icon::before {
+  border-radius: var(--radius-conditional-2);
+  background: center/100% no-repeat blue;
+}
+.email__actions :is(input[type=checkbox]:checked) + .check-icon::before {
+  opacity: 1;
+  color: white;
+}
+.email__details {
+  display: grid;
+  grid-template: var(--list-grid);
+  grid-auto-flow: var(--list-flow);
+  padding-left: 0.25rem;
+}
+.email__details > a {
+  height: 100%;
+}
+.email__details > a::before {
+  position: absolute;
+  content: " ";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.email__details p span {
+  white-space: nowrap;
+}
+.email__details p {
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.email__details h3 {
+  height: var(--list-font-size);
+  padding-bottom: 0.32rem;
+}
+.email__details h3 {
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.email__priority > * {
+  gap: 0.5rem;
+}
+.email__priority input[type=checkbox].star__checkbox {
+  z-index: 1;
+}
+.email__priority input[type=checkbox].star__checkbox:checked + span.star-icon:before {
+  color: blue;
+}
+.email__priority > :is(input[type=checkbox]:checked) ~ label {
+  opacity: 0;
+}
+.email__initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: var(--radius-conditional-2);
+}
+.email__star .star-icon:before {
+  color: var(--borders);
+}
+
+:root ul[list-theme=compact] {
+  --list-card-h: 1.5em;
+  --list-grid: 1fr / minmax(100px, 30%) minmax(0, 1fr) min-content;
+  --list-flow: row;
+  --list-card-maxh: max(var(--list-card-h), var(--list-card-h) + 1.8vw);
+}
+
+:root ul[list-theme=loose] {
+  --list-card-h: 3.25em;
+  --list-grid: 1fr auto / minmax(0, 1fr) min-content;
+  --list-flow: column;
+  --list-card-maxh: max(var(--list-card-h), var(--list-card-h) + 1.2vw);
+}
+
+.visually-hidden {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+          clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  white-space: nowrap !important;
+  width: 1px !important;
+}
+
+.scrim {
+  position: absolute;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100vw;
+  overflow: hidden;
+  background-color: rgba(0, 0, 255, 0.5);
+  border: none;
+  z-index: 1;
+}
+
+@layer base {
+  .card {
+    display: grid;
+    grid-template: auto/minmax(0, calc(var(--list-card-checkbox) + 1vw)) auto min-content;
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    height: var(--list-card-maxh);
+    border-radius: var(--radius-conditional-2);
+    transition: all 100ms ease-in-out;
+    max-width: 100%;
+  }
+  .card * {
+    display: flex;
+    position: relative;
+    max-height: var(--list-card-maxh);
+    margin: auto 0;
+  }
+  ul,
+  ul li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  nav,
+  header,
+  ul,
+  ul li,
+  #actions,
+  #greeting {
+    display: flex;
+    justify-content: space-between;
+  }
+  #list,
+  #list li {
+    height: auto;
+    display: block;
+  }
+  nav {
+    width: 320px;
+    position: fixed;
+    height: 100%;
+    z-index: 2;
+  }
+  nav ul {
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+  }
+  nav ul > * {
+    border-bottom: 1px solid var(--borders);
+    justify-content: space-between;
+    min-height: var(--list-card-checkbox);
+    align-items: center;
+  }
+  nav * + *,
+  .email * + * {
+    color: var(--text-base-color);
+  }
+  nav * + *:hover,
+  .email * + *:hover {
+    color: var(--text-bold-color);
+  }
+  nav h3,
+  nav span:not(.email__initials),
+  .email h3,
+  .email span:not(.email__initials) {
+    color: var(--text-bold-color);
+  }
+  nav__initials,
+  .email__initials {
+    color: var(--card-checkbox-initials);
+    background-color: var(--card-checkbox-bg);
+  }
+  header {
+    flex-flow: row-reverse nowrap;
+  }
+  .email .card,
+  button {
+    background-color: var(--card-bg);
+  }
+  .email .card:hover,
+  button:hover {
+    background-color: var(--card-bg-hover);
+  }
+  .email__actions,
+  button.icon-btn {
+    border-radius: var(--radius-2);
+    border: 1px solid var(--borders);
+  }
+  button.icon-btn {
+    gap: 0.25rem;
+    padding: 0 0.35rem;
+    aspect-ratio: var(--ratio-square);
+    height: 34px;
+  }
+  button.icon-btn span:first-child {
+    pointer-events: none;
+    place-self: center center;
+    width: 100%;
+  }
+  button .primary {
+    background-color: blue;
+  }
+  button {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    border: 0 solid transparent;
+    text-transform: capitalize;
+    margin: 0;
+    padding: 0;
+  }
+  .slider {
+    transform: translateX(-100vh);
+  }
+}
+@layer typography {
+  :root {
+    font-family: var(--font-rounded-sans);
+    font-size: 1rem;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-size: var(--list-font-size);
+    font-weight: 500;
+  }
+  #list a {
+    text-decoration: none;
+  }
+  #list .email {
+    border-bottom: 1px solid var(--borders);
+  }
+  #list .email * + * {
+    font-size: var(--list-font-size);
+    font-weight: 400;
+  }
+  #list .email__initials {
+    text-align: center;
+    font-weight: 300;
+    font-size: var(--list-font-size);
+  }
+  #list .email .card.unread * + * {
+    font-weight: 600;
+  }
+}
+.show {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+#menu-btn {
+  display: flex;
+  width: 100%;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}/*# sourceMappingURL=styles.css.map */

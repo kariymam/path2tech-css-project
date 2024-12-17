@@ -1,1 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/open-props"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- VUE SETUP -->
+    <div id="app" class="grid">
+     <div id="menu-btn">
+      <button id="menu-btn" @click="openMobileMenu()">
+       <span class="material-symbols-rounded menu-icon" aria-hidden="true"></span>
+       <span class="visually-hidden">Open Menu</span>
+      </button>
+      <span>Inbox</span>
+     </div>
+     <nav id="nav_primary" class="slider">
+      <ul class="nav-list">
+       <li>Inbox<span>0 unread</span></li>
+       <li>Drafts</li>
+       <li>Starred</li>
+      </ul>
+     </nav>
+     <button id="close_btn" class="scrim" @click="openMobileMenu($event)">Close menu</button>
+     <div id="scrim" aria-hidden="true"></div>
+     <div id="greeting">
+      <span>Monday, December 16, 2024</span>
+     </div>
+     <header>
+      <div id="actions" class="card">
+       <div id="select_all" class="email__actions">
+        <input id="header_actions" type="checkbox" class="checkbox" />
+        <span class="material-symbols-rounded check-icon" aria-hidden="true"></span>
+        <label for="header_actions" class="visually-hidden">Select All</label>
+       </div>
+       <button class="icon-btn" @click="changeLayout($event)">
+        <span id="change_layout" class="material-symbols-rounded narrow-icon"></span>
+        Compact
+       </button>
+      </div>
+     </header>
+     <div id="list_container">
+      <ul id="list" list-theme="loose">
+       <li class="email" v-for="email in mock_emails" :key="email">
+        <div class="card">
+         <!-- EMAIL ACTIONS -->
+         <div v-for="sender in email.sender" class="email__actions">
+          <span class="email__initials" v-if="!email.sender_img">
+           {{ sender.name.split(" ").map((char) => (char === "" ? char : char[0].toUpperCase())).join("") }}
+          </span>
+          <span class="email__initials" v-else>
+           <img :alt="`${sender.email} profile picture`" :src="`${email.sender_img}`" />
+          </span>
+          <input :id="`email_id_${email.id}`" type="checkbox" class="checkbox" :name="`email_id_${email.id}`" />
+          <span class="material-symbols-rounded check-icon" aria-hidden="true"></span>
+          <label :for="`email_id_${email.id}`" class="visually-hidden"> Select </label>
+         </div>
+         <!-- EMAIL DETAILS -->
+         <a href="#" class="email__details">
+          <span class="visually-hidden">Link</span>
+          <h3 v-for="sender in email.sender">
+           {{ sender.name }}
+          </h3>
+          <p>
+           <span>{{ email.subject }}</span>
+           {{ email.body }}
+          </p>
+         </a>
+         <!-- EMAIL TIME AND STAR -->
+         <div class="email__priority">
+          <div>
+           <time class="email__datetime">
+            6:00PM
+           </time>
+           <div class="email__star">
+            <input :id="`email_star_${email.id}`" type="checkbox" class="star__checkbox" :name="`email_star_${email.id}`" />
+            <span class="material-symbols-rounded star-icon"></span>
+            <label :for="`email_star_${email.id}`" class="visually-hidden"> star this email </label>
+           </div>
+          </div>
+         </div>
+        </div>
+       </li>
+      </ul>
+      <div>Pagination</div>
+     </div>
+    </div>
+    <script type="module" src="index.js"></script>
+</body>
+</html>
+
 
